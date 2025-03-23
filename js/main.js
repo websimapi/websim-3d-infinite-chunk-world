@@ -23,9 +23,13 @@ class Application {
     
     async init() {
         try {
+            // Show loading message with progress updates
+            this.updateLoadingMessage('Initializing engine...');
+            
             // Initialize the rendering engine
             await this.engineManager.init(this.container);
             
+            this.updateLoadingMessage('Creating world chunks...');
             // Initialize the chunk manager
             this.chunkManager = new ChunkManager(
                 this.engineManager,
@@ -34,6 +38,7 @@ class Application {
                 config.world.seed
             );
             
+            this.updateLoadingMessage('Setting up UI...');
             // Setup settings panel
             if (config.debug.tweakpane) {
                 await initSettingsPanel(this);
@@ -53,6 +58,12 @@ class Application {
         } catch (error) {
             console.error('Failed to initialize application:', error);
             this.loadingElement.textContent = 'Error loading: ' + error.message;
+        }
+    }
+    
+    updateLoadingMessage(message) {
+        if (this.loadingElement) {
+            this.loadingElement.textContent = message;
         }
     }
     
@@ -81,4 +92,3 @@ const app = new Application();
 document.addEventListener('DOMContentLoaded', () => {
     app.init();
 });
-

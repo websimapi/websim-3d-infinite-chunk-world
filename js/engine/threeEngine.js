@@ -66,10 +66,16 @@ export class ThreeEngine {
             // Add renderer to container
             container.appendChild(this.renderer.domElement);
             
-            // Create controls
-            this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-            this.controls.enableDamping = true;
-            this.controls.dampingFactor = 0.05;
+            // Create controls with fallback mechanism
+            try {
+                this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+                this.controls.enableDamping = true;
+                this.controls.dampingFactor = 0.05;
+            } catch (controlsError) {
+                this.logger.warn('Failed to initialize OrbitControls:', controlsError);
+                // Simple fallback camera controls if OrbitControls fails to load
+                this.setupFallbackControls(this.renderer.domElement);
+            }
             
             // Add ambient light
             const ambientLight = new THREE.AmbientLight(0x404040, 1);
@@ -98,6 +104,50 @@ export class ThreeEngine {
             this.logger.error('Failed to initialize ThreeEngine:', error);
             throw error;
         }
+    }
+    
+    setupFallbackControls(domElement) {
+        this.logger.info('Setting up fallback camera controls');
+        // Simple mouse rotation controls
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        
+        domElement.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+        
+        domElement.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+            
+            // Rotate camera based on mouse movement
+            this.camera.position.x += deltaX * 0.01;
+            this.camera.position.y -= deltaY * 0.01;
+            this.camera.lookAt(0, 0, 0);
+            
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+        
+        domElement.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        // Simple zoom with mouse wheel
+        domElement.addEventListener('wheel', (e) => {
+            const zoomSpeed = 0.1;
+            const direction = e.deltaY > 0 ? 1 : -1;
+            const factor = Math.pow(0.95, direction);
+            
+            // Zoom in/out by moving camera closer/further
+            const cameraDirection = new THREE.Vector3();
+            this.camera.getWorldDirection(cameraDirection);
+            this.camera.position.addScaledVector(cameraDirection, factor * zoomSpeed * 10);
+            
+            e.preventDefault();
+        });
     }
     
     update() {
@@ -172,4 +222,3 @@ export class ThreeEngine {
         }
     }
 }
-
