@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Infinite Chunk World</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.module.js",
+            "three/addons/": "https://unpkg.com/three@r160/examples/jsm/",
+            "babylon": "https://cdn.babylonjs.com/babylon.js",
+            "babylon-physics": "https://cdn.babylonjs.com/babylon.physics.min.js",
+            "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js",
+            "rapier": "https://cdn.jsdelivr.net/npm/@dimforge/rapier3d@0.11.2/rapier.min.js",
+            "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.6.6/build/three-mesh-bvh.module.js",
+            "tweakpane": "https://cdn.jsdelivr.net/npm/tweakpane@3.1.10/dist/tweakpane.es.js"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="renderCanvas"></div>
+    <div id="loading">Loading...</div>
+    <div id="settings-panel"></div>
+    <div id="performance-stats"></div>
+    
+    <script type="module" src="config.js"></script>
+    <script type="module" src="js/main.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
