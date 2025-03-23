@@ -58,6 +58,11 @@ class Application {
         } catch (error) {
             console.error('Failed to initialize application:', error);
             this.loadingElement.textContent = 'Error loading: ' + error.message;
+            // Attempt recovery by hiding loading after a timeout
+            setTimeout(() => {
+                this.loadingElement.style.display = 'none';
+                this.update(); // Try to start the render loop anyway
+            }, 3000);
         }
     }
     
